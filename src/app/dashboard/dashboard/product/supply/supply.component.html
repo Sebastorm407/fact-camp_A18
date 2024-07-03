@@ -1,7 +1,7 @@
 <nav class = "flex px-5 py-3 text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B] " aria-label="Breadcrumb">
   <ol class = "inline-flex items-center space-x-1 md:space-x-3">
       <li class = "inline-flex items-center">
-            <p class="text-gray-300">Productos</p>
+            <p class="text-gray-300">Insumos</p>
       </li>
       <!--
       <li>
@@ -40,8 +40,8 @@
             <span>Import</span>
         </button>
 
-        <a routerLink="/add-supply">
-          <button class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+        <a routerLink="/add-supply" routerLinkActive="active" ariaCurrentWhenActive="page">
+          <button class="w-full flex items-center justify-center px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -54,13 +54,13 @@
 
 <div class="mt-6 md:flex md:items-center md:justify-between">
     <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-        <a routerLink="/product">
+        <a routerLink="/product" routerLinkActive="active" ariaCurrentWhenActive="page">
           <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
             Productos
         </button>
         </a>
 
-        <a routerLink="/supply">
+        <a routerLink="/supply" routerLinkActive="active" ariaCurrentWhenActive="page">
           <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
             Insumos
         </button>
