@@ -30,7 +30,6 @@ export const routes: Routes = [
     {path: 'supply', component: SupplyComponent},
     {path: 'buyer', component: BuyerComponent},
     {path: 'fact', component: FactComponent},
-
   ]},
 
 ];
