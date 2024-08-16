@@ -1,9 +1,10 @@
+import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-graphic',
   standalone: true,
-  imports: [],
+  imports: [HttpClientModule],
   templateUrl: './graphic.component.html',
   styleUrl: './graphic.component.css'
 })

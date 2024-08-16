@@ -15,7 +15,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  {path: '', component: LoginComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent, children: [
     {path: 'home', component: HomeComponent},
     {path: 'product', component: ProductComponent, children: [
