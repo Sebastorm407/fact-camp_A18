@@ -1,9 +1,9 @@
-<nav class = "flex px-5 py-3 text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B] " aria-label="Breadcrumb">
-  <ol class = "inline-flex items-center space-x-1 md:space-x-3">
-      <li class = "inline-flex items-center">
-            <p class="text-gray-300">Facturas</p>
-      </li>
-      <!--
+<nav class="flex px-5 py-3 text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B] " aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <li class="inline-flex items-center">
+      <p class="text-gray-300">Facturas</p>
+    </li>
+    <!--
       <li>
           <div class = "flex items-center">
               <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
@@ -16,5 +16,216 @@
 
 <section>
 
-</section>
+  <div class="container p-4">
 
+    <div class="flex flex-col md:flex-row contain-flex">
+
+      <div class="flex-1 py-16 px-4">
+        <div>
+          <div class="w-full max-w-xs pb-10">
+            <label for="combo-box" class="block text-sm font-medium text-zinc-300 pb-3">Selecciona un Cliente</label>
+            <div class="mt-1 relative">
+              <select id="combo-box"
+                class="block w-full bg-transparent border text-gray-200 border-gray-300 rounded-md shadow-sm py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option class="text-neutral-300" value="" disabled selected></option>
+                <option *ngFor="let element of elements" [value]="element.id">{{ element.name }}</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                  fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10 3a1 1 0 01.832.445l5.5 7.5a1 1 0 01-.832 1.555H4.5a1 1 0 01-.832-1.555l5.5-7.5A1 1 0 0110 3z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+
+              <div class="grid-search md:flex md:items-center md:justify-between">
+
+                <div
+                  class="relative aspect-square rounded-full size-3 flex border dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
+                  <svg class=" m-auto" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linejoin="round"
+                      d="M5.5 7c2 0 6.5-3 6.5-3s4.5 3 6.5 3v4.5C18.5 18 12 20 12 20s-6.5-2-6.5-8.5z"></path>
+                  </svg>
+                </div>
+
+                <div class="relative flex items-center mt-4 md:mt-0 pb-4">
+                  <span class="absolute">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                  </span>
+
+                  <input type="search" [(ngModel)]="searchText" id="form1" class="form-control" placeholder="Search"
+                    aria-label="search"
+                    class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
+                </div>
+
+              </div>
+
+              <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead class="bg-gray-50 dark:bg-blue-800">
+                    <tr>
+
+                      <th scope="col"
+                        class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <button class="flex items-center gap-x-3 focus:outline-none">
+                          <span>Nombre</span>
+
+                          <svg class="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                              fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                            <path
+                              d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                              fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                            <path
+                              d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                              fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                          </svg>
+                        </button>
+                      </th>
+
+                      <th scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        Precio de Venta
+                      </th>
+
+                      <th scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        Stock</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                    <tr *ngFor="let products of products| filter:searchText">
+                      <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                        <div class="inline px-3 py-2 text-sm rounded-full text-emerald-500 gap-x-2 ">
+                          {{ products.name }}
+                        </div>
+                      </td>
+                      <td class="px-4 py-4 text-sm whitespace-nowrap">
+                        <div class="text-gray-100">
+                          {{ products.sell_price }}
+                        </div>
+                      </td>
+                      <td class="text-gray-100 px-4 py-4 text-sm whitespace-nowrap">
+                        40
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="flex justify-between h-auto p-5">
+                <div class="">
+                  <input type="number" id="form1" class="form-control" placeholder="Cant." aria-label="search"
+                    class="block py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg  placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
+                </div>
+                <div class="text-red-300 mr-4">
+                  <button type="submit" [disabled]=""
+                    class="submit-fact font-semibold leading-none text-white py-3 rounded-xl px-10 bg-blue-800 rounded hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
+                    Agregar
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </div>
+
+      <div class="fact-2 flex-1 py-16 flex justify-end">
+        <div class="flex flex-col"></div>
+
+          <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+
+              <div class="flex justify-center mb-10">
+                <h1 class="text-lime-800 text-5xl">Factura</h1>
+              </div>
+
+              <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead class="bg-red-300 dark:bg-lime-700">
+                    <tr>
+
+                      <th scope="col"
+                        class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <button class="flex items-center gap-x-3 focus:outline-none">
+                          <span>Nombre</span>
+
+                          <svg class="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                              fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                            <path
+                              d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                              fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                            <path
+                              d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                              fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                          </svg>
+                        </button>
+                      </th>
+
+                      <th scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        Precio de Venta
+                      </th>
+
+                      <th scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        Stock</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                    <tr>
+                      <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                        <div class="inline px-3 py-2 text-sm rounded-full text-emerald-500 gap-x-2 ">
+                          bocadillo
+                        </div>
+                      </td>
+                      <td class="px-4 py-4 text-sm whitespace-nowrap">
+                        <div class="text-gray-100">
+                          2
+                        </div>
+                      </td>
+                      <td class="text-gray-100 px-4 py-4 text-sm whitespace-nowrap">
+                        40
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="flex justify-center h-auto p-5">
+                <div class="text-red-300 mr-4">
+                  <button type="submit" [disabled]=""
+                    class="font-semibold leading-none text-white py-3 rounded-xl px-40 bg-lime-700 rounded hover:bg-lime-500 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
+                    Generar
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+
+
+</section>

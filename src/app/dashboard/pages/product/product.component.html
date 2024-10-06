@@ -78,7 +78,7 @@
             </svg>
         </span>
 
-        <input type="text" placeholder="Search" class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
+        <input type="search" [(ngModel)]="searchText" id="form1" class="form-control" placeholder="Search" aria-label="search" class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
     </div>
 </div>
 
@@ -87,7 +87,7 @@
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-800">
+                    <thead class="bg-gray-50 dark:bg-blue-800">
                         <tr>
                             <th scope="col" class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 Id
@@ -109,28 +109,28 @@
                                 Precio de Venta
                             </th>
 
-                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Update</th>
-                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Delete</th>
+                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Actualizar</th>
+                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Eliminar</th>
 
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                        <tr>
+                        <tr *ngFor="let product of products| filterProducts:searchText">
                             <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                 <div>
-                                    <h2 class="font-medium text-gray-800 dark:text-white ">Catalog</h2>
-                                    <p class="text-sm font-normal text-gray-600 dark:text-gray-400">catalogapp.io</p>
+                                    <div class="text-gray-100">
+                                      {{ product.id }}
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                <div class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                    Customer
+                                <div class="inline px-3 py-2 text-sm rounded-full text-emerald-500 gap-x-2 dark:bg-gray-800">
+                                  {{ product.name }}
                                 </div>
                             </td>
                             <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                <div>
-                                    <h4 class="text-gray-700 dark:text-gray-200">Content curating app</h4>
-                                    <p class="text-gray-500 dark:text-gray-400">Brings all your news into one place</p>
+                                <div class="text-gray-100">
+                                  {{ product.sell_price }}
                                 </div>
                             </td>
                             <td class="px-4 py-4 text-sm whitespace-nowrap">

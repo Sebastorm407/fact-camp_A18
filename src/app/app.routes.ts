@@ -20,14 +20,15 @@ export const routes: Routes = [
     {path: 'home', component: HomeComponent},
     {path: 'product', component: ProductComponent, children: [
       {path: 'add-product', component: AddProductComponent},
-      {path: 'add-supply', component: AddSupplyComponent}
     ]},
     {path: 'graphic', component: GraphicComponent},
     {path: 'report', component: ReportComponent},
     {path: 'employee', component: EmployeeComponent},
     {path: 'client', component: ClientComponent},
     {path: 'supplier', component: SupplierComponent},
-    {path: 'supply', component: SupplyComponent},
+    {path: 'supply', component: SupplyComponent, children: [
+      {path: 'add-supply', component: AddSupplyComponent}
+    ]},
     {path: 'buyer', component: BuyerComponent},
     {path: 'fact', component: FactComponent},
   ]},

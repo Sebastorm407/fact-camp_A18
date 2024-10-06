@@ -1,33 +1,88 @@
 <div class="w-full bg-gradient-to-b from-slate-700">
   <div class="bg-gradient-to-b from-blue-800 to-blue-600 h-40"></div>
   <div class="max-w-xl mx-auto px-2 sm:px-20 lg:px-8 mb-4">
-      <div class="bg-gray-900 w-full shadow rounded-3xl p-8 sm:p-12 -mt-28">
-          <p class="text-lg leading-7 text-center text-white">Anadir Insumo</p>
-          <form action="" method="post">
-            <div class="md:flex items-center mt-8">
-              <div class="w-full flex flex-col">
-                  <label class="text-sm leading-none text-gray-300">Categoria</label>
-                  <input value="Search" type="text" class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"/>
+    <div class="bg-gray-900 w-full shadow rounded-3xl p-8 sm:p-12 -mt-28">
+      <p class="text-lg leading-7 text-center text-white">Anadir Insumo</p>
+      <form [formGroup]="formSupply" (ngSubmit)="createSupp()" method="post">
+        <div class="md:flex items-center mt-8">
+          <div class="w-full flex flex-col flex-1">
+            <div class="w-full flex flex-row justify-between">
+              <div class="w-52 max-w-xs">
+                <label for="combo-box" class="block text-sm font-medium text-zinc-300 pb-3">Selecciona una
+                  Categoria</label>
+                <div class="mt-1 relative">
+                  <select id="combo-box" type="number" formControlName="id_category"
+                    class="block w-full bg-transparent border text-gray-200 border-gray-300 rounded-md shadow-sm py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option class="text-neutral-300" value="" disabled selected></option>
+                    <option  *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                  </select>
+                  <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                      fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd"
+                        d="M10 3a1 1 0 01.832.445l5.5 7.5a1 1 0 01-.832 1.555H4.5a1 1 0 01-.832-1.555l5.5-7.5A1 1 0 0110 3z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
               </div>
 
+              <!-- Botón que abre la ventana modal -->
+              <button (click)="openModal()"
+                class="button-add-i text-xs h-10 font-semibold leading-none mt-8 text-white px-6 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
+                Agregar Categoria
+              </button>
+
+              <!-- Modal (ventana emergente) -->
+              <div *ngIf="isOpenModal"
+                class="fixed inset-0 text-gray-100 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                <form [formGroup]="formCategory" (ngSubmit)="createCategory()" method="post">
+                  <div class="bg-blue-900 p-6 rounded-lg shadow-lg max-w-sm w-full">
+
+                    <label for="name" class="text-xl font-semibold mb-4">Agregar una categoria</label>
+
+                    <!-- Input del modal -->
+                    <input type="text" id="name" formControlName="name"
+                      class="border text-black border-gray-900 bg-slate-200 p-2 mt-5 w-full rounded mb-4"
+                      placeholder="Escribe aquí...">
+
+                    <!-- Botones de aceptar y cancelar -->
+                    <div class="flex justify-end space-x-2">
+                      <button class="bg-red-500 text-white px-4 py-2 rounded" type="button"
+                        (click)="closeModal()">Rechazar</button>
+                      <button class="bg-green-500 text-white px-4 py-2 rounded" type="submit">Aceptar</button>
+                    </div>
+
+                  </div>
+                </form>
               </div>
 
-              <div class="md:flex items-center mt-12">
-                  <div class="w-full md:w-1/2 flex flex-col">
-                      <label class="text-sm leading-none text-gray-300">Nombre</label>
-                      <input type="text" class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded" />
-                  </div>
-                  <div class="w-full md:w-1/2 flex flex-col md:ml-6 md:mt-0 mt-4">
-                      <label class="text-sm leading-none text-gray-300">Precio de Venta</label>
-                      <input type="number" class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"/>
-                  </div>
-              </div>
-              <div class="flex items-center justify-center w-full">
-                  <button class="mt-9 font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
-                      Anadir
-                  </button>
-              </div>
-          </form>
-      </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="md:flex items-center mt-12">
+          <div class="w-full md:w-1/2 flex flex-col">
+            <label for="name" class="text-sm leading-none text-gray-300">Nombre</label>
+            <input id="name" formControlName="name" type="text"
+              class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded" />
+          </div>
+          <div class="w-full md:w-1/2 flex flex-col md:ml-6 md:mt-0 mt-4">
+            <label for="buy_price" class="text-sm leading-none text-gray-300">Precio de Compra</label>
+            <input id="buy_price" formControlName="buy_price" type="number"
+              class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded" />
+          </div>
+        </div>
+        <div class="flex items-center justify-center w-full">
+          <button
+            type="submit" [disabled]="formSupply.invalid" class="mt-9 font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
+            Anadir
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

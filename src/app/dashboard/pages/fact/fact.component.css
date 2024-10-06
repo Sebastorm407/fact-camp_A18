@@ -1,0 +1,49 @@
+.contain-grid{
+
+}
+
+select {
+  min-height: 40px; /* Ajusta esto según sea necesario */
+  -webkit-appearance: none; /* Para Safari y Chrome */
+  -moz-appearance: none; /* Para Firefox */
+  appearance: none; /* Para navegadores modernos */
+  background-image: none; /* Opcional: elimina la imagen de fondo en navegadores que no aplican -webkit-appearance */
+
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Para Firefox */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Para Safari y Chrome */
+  margin: 0; /* Opcional: elimina el margen */
+}
+
+option {
+  padding: 10px; /* Aumenta el padding para mejorar la apariencia */
+  font-size: 10rem; /* Ajusta el tamaño del texto en las opciones */
+}
+
+@media (max-width: 1100px) {
+  .contain-flex{
+    flex-direction: column;
+  }
+
+  .fact-2{
+    display: flex;
+    justify-content: center;
+  }
+
+  .grid-search{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .submit-fact{
+    padding-left: 3vh;
+    padding-right: 3vh;
+    margin-left: 1vh;
+  }
+}
