@@ -1,0 +1,21 @@
+::ng-deep .ngx-pagination a,
+::ng-deep .ngx-pagination button {
+    color: #ffffff !important;
+    border-radius: 0.5rem !important;
+    padding: .375rem .75rem !important;
+}
+
+::ng-deep .ngx-pagination a:hover,
+::ng-deep .ngx-pagination button:hover {
+    background-color: #0056b3 !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Para Firefox */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Para Safari y Chrome */
+  margin: 0; /* Opcional: elimina el margen */
+}

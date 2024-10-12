@@ -13,3 +13,13 @@ select {
   background-image: none; /* Opcional: elimina la imagen de fondo en navegadores que no aplican -webkit-appearance */
 
 }
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Para Firefox */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Para Safari y Chrome */
+  margin: 0; /* Opcional: elimina el margen */
+}

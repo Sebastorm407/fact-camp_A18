@@ -1,88 +1,243 @@
-<div class="w-full bg-gradient-to-b from-slate-700">
-  <div class="bg-gradient-to-b from-blue-800 to-blue-600 h-40"></div>
-  <div class="max-w-xl mx-auto px-2 sm:px-20 lg:px-8 mb-4">
-    <div class="bg-gray-900 w-full shadow rounded-3xl p-8 sm:p-12 -mt-28">
+<div class="w-full bg-gradient-to-b mt-4 rounded-3xl from-slate-700">
+  <div class="bg-gradient-to-b rounded-3xl from-blue-800 to-blue-600 h-40"></div>
+  <div class="max-w-xl mx-auto  px-2 sm:px-20 lg:px-8 mb-4">
+    <div class="bg-gray-900 w-full rounded-3xl p-8 sm:p-12 -mt-28">
       <p class="text-lg leading-7 text-center text-white">Anadir Insumo</p>
       <form [formGroup]="formSupply" (ngSubmit)="createSupp()" method="post">
         <div class="md:flex items-center mt-8">
           <div class="w-full flex flex-col flex-1">
-            <div class="w-full flex flex-row justify-between">
+            <div class="w-full flex flex-col justify-between">
               <div class="w-52 max-w-xs">
-                <label for="combo-box" class="block text-sm font-medium text-zinc-300 pb-3">Selecciona una
-                  Categoria</label>
-                <div class="mt-1 relative">
-                  <select id="combo-box" type="number" formControlName="id_category"
-                    class="block w-full bg-transparent border text-gray-200 border-gray-300 rounded-md shadow-sm py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                    <option class="text-neutral-300" value="" disabled selected></option>
-                    <option  *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-                  </select>
-                  <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                      fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 01.832.445l5.5 7.5a1 1 0 01-.832 1.555H4.5a1 1 0 01-.832-1.555l5.5-7.5A1 1 0 0110 3z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+                <div class="flex flex-row">
+                  <div class="flex flex-col">
+                    <label for="combo-box" class="block text-sm font-medium text-zinc-300 pb-3">Selecciona una
+                      Categoria</label>
+                    <div class="mt-1 relative flex flex-row w-60">
+                      <select id="combo-box" type="number" formControlName="id_category"
+                        class="block w-full bg-transparent border text-gray-200 border-gray-500 rounded-md shadow-sm py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option class="text-neutral-300" value="" disabled selected></option>
+                        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                      </select>
+                      <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                          fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd"
+                            d="M10 3a1 1 0 01.832.445l5.5 7.5a1 1 0 01-.832 1.555H4.5a1 1 0 01-.832-1.555l5.5-7.5A1 1 0 0110 3z"
+                            clip-rule="evenodd" />
+                        </svg>
+                      </div>
 
-              <!-- Botón que abre la ventana modal -->
-              <button (click)="openModal()"
-                class="button-add-i text-xs h-10 font-semibold leading-none mt-8 text-white px-6 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
-                Agregar Categoria
-              </button>
+                      <!-- Botón que abre la ventana modal -->
+
+
+                    </div>
+                  </div>
+
+                  <button (click)="openCategories()"
+                    class="button-add-i text-xs h-10 ml-10 font-semibold leading-none mt-8 text-white px-6 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
+                    Categorias
+                  </button>
+                </div>
+
+              </div>
 
               <!-- Modal (ventana emergente) -->
-              <div *ngIf="isOpenModal"
-                class="fixed inset-0 text-gray-100 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-                <form [formGroup]="formCategory" (ngSubmit)="createCategory()" method="post">
-                  <div class="bg-blue-900 p-6 rounded-lg shadow-lg max-w-sm w-full">
 
-                    <label for="name" class="text-xl font-semibold mb-4">Agregar una categoria</label>
 
-                    <!-- Input del modal -->
-                    <input type="text" id="name" formControlName="name"
-                      class="border text-black border-gray-900 bg-slate-200 p-2 mt-5 w-full rounded mb-4"
-                      placeholder="Escribe aquí...">
 
-                    <!-- Botones de aceptar y cancelar -->
-                    <div class="flex justify-end space-x-2">
-                      <button class="bg-red-500 text-white px-4 py-2 rounded" type="button"
-                        (click)="closeModal()">Rechazar</button>
-                      <button class="bg-green-500 text-white px-4 py-2 rounded" type="submit">Aceptar</button>
-                    </div>
-
-                  </div>
-                </form>
+              <div class="md:flex items-center mt-12">
+                <div class="w-full md:w-1/2 flex flex-col">
+                  <label for="name" class="text-sm leading-none text-gray-300">Nombre</label>
+                  <input id="name" formControlName="name" type="text"
+                    class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded" />
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col md:ml-6 md:mt-0 mt-4">
+                  <label for="buy_price" class="text-sm leading-none text-gray-300">Precio de Compra</label>
+                  <input id="buy_price" formControlName="buy_price" type="number"
+                    class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded" />
+                </div>
               </div>
-
+              <div class="flex items-center justify-center w-full">
+                <button type="submit" [disabled]="formSupply.invalid"
+                  class="mt-9 font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
+                  Anadir
+                </button>
+              </div>
 
             </div>
 
           </div>
 
         </div>
-
-        <div class="md:flex items-center mt-12">
-          <div class="w-full md:w-1/2 flex flex-col">
-            <label for="name" class="text-sm leading-none text-gray-300">Nombre</label>
-            <input id="name" formControlName="name" type="text"
-              class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded" />
-          </div>
-          <div class="w-full md:w-1/2 flex flex-col md:ml-6 md:mt-0 mt-4">
-            <label for="buy_price" class="text-sm leading-none text-gray-300">Precio de Compra</label>
-            <input id="buy_price" formControlName="buy_price" type="number"
-              class="text-sm leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded" />
-          </div>
-        </div>
-        <div class="flex items-center justify-center w-full">
-          <button
-            type="submit" [disabled]="formSupply.invalid" class="mt-9 font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
-            Anadir
-          </button>
-        </div>
       </form>
+
     </div>
   </div>
+</div>
+
+<section>
+  <div *ngIf="isOpenEliminate" class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="bg-gray-800 bg-opacity-50 fixed inset-0"></div>
+
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg z-50 max-w-sm w-full">
+      <h2 class="text-xl mb-10 text-lime-50">Eliminaras esta Categoria y cada producto asociado a ella, Seguro?</h2>
+
+      <!-- Botones de aceptar y cancelar -->
+      <div class="flex justify-end space-x-2">
+        <button
+          class="bg-red-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200"
+          (click)="closeDelete()">Cancelar</button>
+        <button
+          class="bg-blue-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200"
+          (click)="acceptDelete()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div *ngIf="isOpenCategories"
+  class="fixed inset-0 text-gray-100 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-gray-900 p-6 m-32 shadow-lg max-w-2xl w-full rounded-3xl">
+
+    <div class="mb-12 flex justify-between">
+      <button (click)="closeCategories()" class="ml-6 mt-6 w-8">
+        <img src="assets/images/cancelar.png" alt="">
+      </button>
+      <button (click)="openAddCategory()"
+        class="button-add-i text-xs h-10 font-semibold leading-none mt-8 text-white px-6 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none">
+        Add Category
+      </button>
+
+    </div>
+
+    <!--TABLE CATEGORIES-->
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-lime-700">
+        <tr>
+          <th scope="col"
+            class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            Id
+          </th>
+
+          <th scope="col"
+            class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <button class="flex items-center gap-x-3 focus:outline-none">
+              <span>Nombre</span>
+
+              <svg class="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                  fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                <path
+                  d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                  fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                <path
+                  d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                  fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+              </svg>
+            </button>
+          </th>
+
+          <th scope="col"
+            class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            Update</th>
+          <th scope="col"
+            class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            Delete</th>
+
+
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+        <tr
+          *ngFor="let category of categories | filterCategory:searchText | paginate: {itemsPerPage: 5, currentPage: p}">
+          <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+            <div>
+              <h2 class="font-medium text-gray-800 dark:text-white ">
+                {{ category.index }}
+              </h2>
+            </div>
+          </td>
+
+          <!--NgIf for name in update-->
+          <td *ngIf="!category.isEditing" class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+            <div
+              class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+              {{ category.name }}
+            </div>
+          </td>
+
+          <td *ngIf="category.isEditing" class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+            <input type="text"
+              class="text-sm leading-none p-3 focus:outline-none focus:border-blue-700 border-0 text-emerald-500 bg-gray-800 rounded-2xl"
+              [value]="category.name" [(ngModel)]="category.name">
+          </td>
+          <!--End NgIf for name in update-->
+
+          <td class="px-4 py-4 text-sm whitespace-nowrap">
+            <button *ngIf="!category.isEditing" (click)="editCategory(category)">
+              <img class="w-8" src="assets/images/sync.png" alt="">
+            </button>
+            <button *ngIf="category.isEditing" (click)="updateCategory(category)">
+              <img class="w-8" src="assets/images/cheque.png" alt="">
+            </button>
+            <button *ngIf="category.isEditing" (click)="cancelEdit(category)">
+              <img class="w-8 ml-2" src="assets/images/cancelar.png" alt="">
+            </button>
+          </td>
+
+
+          <td class="px-4 py-4 text-sm whitespace-nowrap">
+            <button (click)="deleteCategories(category.id)">
+              <img class="w-8" src="assets/images/delete.png" alt="">
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
+      <div class="text-sm text-gray-500 dark:text-gray-400">
+        Page <span class="font-medium text-gray-700 dark:text-gray-100">{{p}} of {{ totalPages }}</span>
+      </div>
+
+      <pagination-controls (pageChange)="p = $event"
+        class="pagination-controls flex justify-center mt-4 space-x-2 text-gray-700 dark:text-gray-300"></pagination-controls>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+
+<div *ngIf="isOpenAddCategories"
+  class="fixed inset-0 text-gray-100 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+
+  <form [formGroup]="formCategory" (ngSubmit)="createCategory()" method="post">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full">
+
+      <label for="name" class="text-xl font-semibold mb-4">Agregar una categoria</label>
+
+      <div class="w-full md:w-1/2 flex flex-col md:mt-0 mt-4">
+        <input type="text" id="name" formControlName="name"
+          class="text-sm w-60  mb-4 leading-none text-gray-200 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-700 rounded"
+          placeholder="Escribe aquí...">
+      </div>
+      <!-- Input del modal -->
+
+      <!-- Botones de aceptar y cancelar -->
+      <div class="flex justify-end space-x-2">
+        <button
+          class="bg-red-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200"
+          type="button" (click)="closeModal()">Rechazar</button>
+        <button
+          class="bg-blue-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200"
+          type="submit" (click)="accept()">Aceptar</button>
+      </div>
+
+    </div>
+  </form>
 </div>

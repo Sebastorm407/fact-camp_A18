@@ -22,6 +22,12 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class LoginComponent implements OnInit{
 
+  number_id: string = '';
+  password: string = '';
+  addedEmployees: any[] = [];
+  employeeAd: any[] = [];
+  employees: any[] = [];
+
   employee?: LoginEmployee;
   employeeObject: string[] = [];
   form: FormGroup;
@@ -38,18 +44,77 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.extraer()
   }
 
+  /*
+  login(): void{
+    this.authService.login(this.number_id, this.password).subscribe({
+      next: () => this.router.navigate(['/dashboard']),
+      error: (err) => console.error('Login failed', err)
+    })
+  }
+    */
+
   extraer(){
-    this.authService.getEmployee('1').subscribe((data: LoginEmployee) => {
+    /*
+    this.authService.getEmployeeById(id).subscribe((data: LoginEmployee) => {
       this.employee = data;
       console.log(data)
       console.log('Identification' + data.number_id);
     })
+    */
   }
 
+  /*
+  makeBill(){
+    this.addedProducts.forEach(product => {
+      const productTotal = product.sell_price * product.quantity;
+      this.totalBill += productTotal;
+
+      this.makeBillProduct.push(product)
+    })
+    this.getEmployee();
+  }
+*/
+
+/*
+  getEmployees(): void{
+    this.authService.getEmployees().subscribe({
+      next: (data) => {
+        this.employees = data;
+        console.log(this.employees)
+
+        //Recorrer y meter en array
+        this.employees.forEach(employee => {
+          this.employeeAd.push(employee);
+        })
+        console.log(this.employeeAd);
+      },
+      error: (err) => {
+        console.error('Error al obtener los empleados', err)
+      }
+    })
+  }
+    */
+
+  /*
   loginEmployee(){
+    this.getEmployees();
+
+    const foundEmployee = this.employees.find(employeeArray =>
+      employeeArray.number_id === this.number_id && employeeArray.password === this.password
+    );
+
+    if(foundEmployee){
+      console.log('Empleado encontrado', foundEmployee);
+      const token = this.authService.generateToken(foundEmployee.id)
+      localStorage.setItem('token', token);
+      this.router.navigate(['/dashboard']);
+    } else{
+      console.error('Credenciales incorrectas');
+    }
+  */
+    /*
     const employeeId = this.form.value.id;
     const passwordId = this.form.value.password;
 
@@ -60,5 +125,5 @@ export class LoginComponent implements OnInit{
         console.log('Eres un gil')
       }
     }
+    */
   }
-}

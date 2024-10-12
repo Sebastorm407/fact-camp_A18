@@ -1,0 +1,11 @@
+::ng-deep .ngx-pagination a,
+::ng-deep .ngx-pagination button {
+    color: #ffffff !important;
+    border-radius: 0.5rem !important;
+    padding: .375rem .75rem !important;
+}
+
+::ng-deep .ngx-pagination a:hover,
+::ng-deep .ngx-pagination button:hover {
+    background-color: #0056b3 !important;
+}

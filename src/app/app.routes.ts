@@ -22,7 +22,9 @@ export const routes: Routes = [
       {path: 'add-product', component: AddProductComponent},
     ]},
     {path: 'graphic', component: GraphicComponent},
-    {path: 'report', component: ReportComponent},
+    {path: 'report', component: ReportComponent, children: [
+      {path: 'fact', component: FactComponent}
+    ]},
     {path: 'employee', component: EmployeeComponent},
     {path: 'client', component: ClientComponent},
     {path: 'supplier', component: SupplierComponent},
