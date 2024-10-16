@@ -16,34 +16,19 @@
 
 <section>
 
-  <div class="sm:flex sm:items-center sm:justify-between ">
 
-    <div
-      class="relative aspect-square rounded-full size-3 flex border dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
-      <svg class=" m-auto" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-        <path fill="none" stroke="currentColor" stroke-linejoin="round"
-          d="M5.5 7c2 0 6.5-3 6.5-3s4.5 3 6.5 3v4.5C18.5 18 12 20 12 20s-6.5-2-6.5-8.5z"></path>
-      </svg>
-    </div>
-  </div>
 
   <div class="mt-6 md:flex md:items-center md:justify-between">
-    <div
-      class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-      <a href="/dashboard/product">
-        <button
-          class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
-          Productos
-        </button>
-      </a>
 
-      <a href="/dashboard/supply">
-        <button
-          class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-          Insumos
-        </button>
-      </a>
+    <div class="sm:flex sm:items-center sm:justify-between ">
 
+      <div
+        class="relative aspect-square rounded-full size-3 flex border dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
+        <svg class=" m-auto" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linejoin="round"
+            d="M5.5 7c2 0 6.5-3 6.5-3s4.5 3 6.5 3v4.5C18.5 18 12 20 12 20s-6.5-2-6.5-8.5z"></path>
+        </svg>
+      </div>
     </div>
 
     <div class="relative flex items-center mt-4 md:mt-0">
@@ -104,47 +89,40 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
               <tr
-                *ngFor="let product of products| filterSupplies:searchText | paginate: {itemsPerPage: 10, currentPage: p}">
+                *ngFor="let bills of bill| filterFact:searchText | paginate: {itemsPerPage: 10, currentPage: p}">
                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                   <div>
                     <div class="text-gray-100">
-                      {{ product.index }}
+                      {{ bills.index }}
                     </div>
                   </div>
                 </td>
                 <!--NgIf for name in update-->
-                <td *ngIf="!product.isEditing" class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                <td *ngIf="!bills.isEditing" class="px-12 py-4 text-sm font-medium whitespace-nowrap">
                   <div class="inline px-3 py-2 text-sm rounded-full text-emerald-500 gap-x-2 dark:bg-gray-800">
-                    {{ product.name }}
-                  </div>
-                </td>
-                <td *ngIf="product.isEditing" class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                  <div>
-                    <input type="text"
-                      class="text-sm leading-none p-3 focus:outline-none focus:border-blue-700 border-0 text-emerald-500 bg-gray-800 rounded-2xl"
-                      [(ngModel)]="product.name">
+                    {{ bills.make_date }}
                   </div>
                 </td>
                 <!--End NgIf for name in update-->
 
                 <!--NgIf for sell_price in update-->
-                <td *ngIf="!product.isEditing" class="px-10 py-4 text-sm whitespace-nowrap">
+                <td *ngIf="!bills.isEditing" class="px-10 py-4 text-sm whitespace-nowrap">
                   <button class="px-2py-2 font-medium rounded-2xl text-gray-100 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                     <img class="w-10" src="assets/images/pagina-de-busqueda.png" alt="">
                   </button>
                 </td>
-                <td *ngIf="product.isEditing" class="px-4 py-4 text-sm whitespace-nowrap">
+                <td *ngIf="bills.isEditing" class="px-4 py-4 text-sm whitespace-nowrap">
                   <div>
                     <input type="number"
                       class="text-sm leading-none p-3 focus:outline-none focus:border-blue-700 border-0 text-gray-100 bg-gray-800 rounded-2xl"
-                      [(ngModel)]="product.sell_price">
+                      [(ngModel)]="bills.sell_price">
                   </div>
                 </td>
                 <!--End NgIf for sell_price in update-->
 
                 <!--Boton del modal-->
                 <td class="px-4 py-4 text-sm whitespace-nowrap">
-                  <button (click)="openModal(product.id)">
+                  <button (click)="openModal(bills.id)">
                     <img class="w-8" src="assets/images/delete.png" alt="">
                   </button>
 

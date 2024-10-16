@@ -10,6 +10,9 @@ import { RouterOutlet } from '@angular/router';
 import { FormService } from '../product/services/form.service';
 import { CreateProductService } from '../product/add-product/services/create-product.service';
 import { Bill } from '../fact/interfaces/bill';
+import { BillService } from '../fact/services/bill/bill.service';
+import { Client } from '../fact/interfaces/client';
+import { Employee } from '../fact/interfaces/employee';
 
 @Component({
   selector: 'app-report',
@@ -27,13 +30,14 @@ export class ReportComponent implements OnInit{
   createdProduct: any = null;
   productId: number | null = null;
   products: {id: number, name: string, sell_price: number}[] = [];
-  bill: Bill[] = [];
+  bill: any[] = [];
   formBill: FormGroup
 
   constructor(
     private fb: FormBuilder,
     private formService: FormService,
     private createProductService: CreateProductService,
+    private billService: BillService
   ){
     this.formBill = this.fb.group({
       make_date: Date,
@@ -47,57 +51,33 @@ export class ReportComponent implements OnInit{
       this.formService.products$.subscribe(products => {
         this.products = products
       })
-      this.getProducts();
+      this.getBills();
+  }
+
+  getBills(){
+    this.billService.getBill().subscribe({
+      next: (data) => {
+        this.bill = data.map((bill: Bill, index: number) => ({
+          ...bill,
+          index: index + 1
+        }));
+      },
+      error: (err) => {
+        console.error("Error al obtener las facturas", err)
+      }
+    })
   }
 
   formatTotal(value: number): string {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
-  getProducts(): void{
-    this.formService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data.map((product, index) => ({
-          ...product,
-          index: index + 1
-        }));
-      },
-      error: (err) => {
-        console.error("Error al obtener los productos", err)
-      }
-    })
+
+  updateDetailBill(product: any){
+
   }
 
-  loadProducts(){
-    this.formService.getProducts().subscribe(
-      (data: any[]) => {
-        this.products = data.map((product, index) => ({
-          ...product,
-          index: index + 1
-        }));
-      },
-      (error) => {
-        console.error('Error al cargar los productos', error)
-      }
-    )
-  }
-
-  updateProduct(product: any){
-    console.log("Id del producto", product.id);
-
-    this.createProductService.updateProduct(product.id, product).subscribe(
-      (response) => {
-        product.isEditing = false;
-        console.log('Producto actualizado exitosamente', response)
-        this.loadProducts()
-      },
-      (error) => {
-        console.error('Error al actualizar el producto', error)
-      }
-    )
-  }
-
-  deleteProductById(productId: number): void {
+  deleteBillById(productId: number): void {
     if (productId) {
       this.formService.deleteProductbyId(productId).subscribe(
         () => {
@@ -117,7 +97,6 @@ export class ReportComponent implements OnInit{
 
   cancelEdit(supply: any) {
     supply.isEditing = false;
-    this.getProducts(); // Restaurar la lista desde la base de datos (opcional)
   }
 
   get totalPages(): number {
@@ -137,7 +116,7 @@ export class ReportComponent implements OnInit{
 
   accept(){
     if (this.productId !== null) {
-      this.deleteProductById(this.productId);
+      this.deleteBillById(this.productId);
       this.closeModal();
     } else {
       console.error('El ID del producto es nulo');
