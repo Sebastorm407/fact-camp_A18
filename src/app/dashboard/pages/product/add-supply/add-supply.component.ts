@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component, NgModule, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, MinValidator, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit,  } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddCategoryService } from './services/add-category.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateSupplyService } from './services/create-supply.service';

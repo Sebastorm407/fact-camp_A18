@@ -1,12 +1,15 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientService } from './services/clients/client.service';
 import { CommonModule } from '@angular/common';
 import { ProductService } from './services/products/product.service';
 import { FilterPipe } from './filter/filter.pipe';
 import { EmployeeService } from './services/employee/employee.service';
 import { Employee } from './interfaces/employee';
+import { Bill } from './interfaces/bill';
+import { Client } from './interfaces/client';
+import { BillService } from './services/bill/bill.service';
 
 @Component({
   selector: 'app-fact',
@@ -29,17 +32,21 @@ export class FactComponent implements OnInit {
   total: number = 0;
   addedProducts: {name: string, sell_price: number, quantity: number, total: number}[] = [];
   totalValue: number = 0;
-  selectedClientId: string | null = null;
+  selectedClientId!: number;
   isFormActive: boolean = false;
   isButtonVisible: boolean = true;
   isClientVisible: boolean = true;
-  makeBillProduct: any[] = []
+  makeBillProduct: any[] = [];
   employees: any[] = [];
+  date!: string;
+  time!: string;
+  selectedEmployeeId: string | null = null;
 
   constructor(
     private clientService: ClientService,
     private serviceProduct: ProductService,
     private employeeService: EmployeeService,
+    private billService: BillService
   ){}
 
   ngOnInit(): void {
@@ -120,14 +127,87 @@ export class FactComponent implements OnInit {
     }
   }
 
+  getCurrentDate(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = ('0' + (now.getMonth() + 1)).slice(-2);  // Asegurarse de que tenga dos dígitos
+    const day = ('0' + now.getDate()).slice(-2);
+
+    // Formato final: YYYY-MM-DD
+    return `${year}-${month}-${day}`;
+  }
+
+  // Método para obtener la hora actual en formato 'HH:mm:ss'
+  getCurrentTime(): string {
+    const now = new Date();
+    const hours = ('0' + now.getHours()).slice(-2);
+    const minutes = ('0' + now.getMinutes()).slice(-2);
+    const seconds = ('0' + now.getSeconds()).slice(-2);
+
+    // Formato final: HH:mm:ss
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
   makeBill(){
     this.addedProducts.forEach(product => {
       const productTotal = product.sell_price * product.quantity;
       this.totalBill += productTotal;
 
       this.makeBillProduct.push(product)
+
     })
+    const currentDate = this.getCurrentDate();
+    const currentTime = this.getCurrentTime();
+    this.date = currentDate;
+    this.time = currentTime;
+    console.log(this.date)
+    console.log(this.time)
+    console.log(this.selectedClientId)
+    this.selectedEmployeeId = '1';
+    console.log(this.selectedEmployeeId)
+
+
+
     this.getEmployee();
+  }
+
+  formBill: Bill = {
+    make_date: '', // manteniendo snake_case
+    id_client: 0, // manteniendo snake_case
+    id_employee: 1 // manteniendo snake_case
+};
+
+createBill() {
+  // Asegúrate de que id_client tiene un valor numérico
+  console.log('ID del cliente antes de enviar:', this.formBill.id_client);
+
+  const currentDateTime = this.getCurrentDateTime();
+  this.formBill.make_date = currentDateTime; // manteniendo snake_case
+
+  // Muestra el objeto completo
+  console.log('Datos a enviar:', this.formBill);
+
+  this.billService.createBill(this.formBill).subscribe({
+      next: (response) => {
+          console.log('Factura creada exitosamente:', response);
+      },
+      error: (error) => {
+          console.error('Error al crear la factura:', error);
+      }
+  });
+}
+
+
+  getCurrentDateTime(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = ('0' + (now.getMonth() + 1)).slice(-2);
+    const day = ('0' + now.getDate()).slice(-2);
+    const hours = ('0' + now.getHours()).slice(-2);
+    const minutes = ('0' + now.getMinutes()).slice(-2);
+    const seconds = ('0' + now.getSeconds()).slice(-2);
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
   // Método para alternar el estado del formulario
