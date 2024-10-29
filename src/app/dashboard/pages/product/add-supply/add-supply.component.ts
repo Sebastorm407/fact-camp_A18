@@ -19,27 +19,31 @@ import { GetSupplyService } from '../supply/services/get-supply.service';
 })
 export class AddSupplyComponent implements OnInit {
 
+  //Paginacion y Filter
   p: number = 1;
-  formSupply: FormGroup;
-  isOpenCategories: boolean = false;
   searchText: string = '';
-  formCategory: FormGroup;
-  inputValue: string = '';
+  pageSize: number = 5;
+
+  //Arrays
   categories: any[] = []
   supplies: any[] = []
+
+  //
+  formSupply: FormGroup;
+  isOpenCategories: boolean = false;
+  formCategory: FormGroup;
+  inputValue: string = '';
   isOpenAddCategories: boolean = false;
-  pageSize: number = 5;
   isOpenEliminate: boolean = false;
   categoryId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private addCategory: AddCategoryService,
-    private router: Router,
     private getCategories: GetCategoriesService,
     private createSupply: CreateSupplyService,
     private getSupply: GetSupplyService,
-    private route: ActivatedRoute // Inyección de ActivatedRoute
+    private route: ActivatedRoute
 
   ){
     this.formCategory = this.fb.group({
@@ -105,7 +109,6 @@ export class AddSupplyComponent implements OnInit {
 
   openCategories(){
     this.isOpenCategories = true
-    document.body.style.overflow = 'hidden'; // Desactiva el scroll
   }
 
   closeModal(){

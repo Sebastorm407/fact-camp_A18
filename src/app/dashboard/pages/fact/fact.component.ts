@@ -10,6 +10,9 @@ import { Employee } from './interfaces/employee';
 import { Bill } from './interfaces/bill';
 import { Client } from './interfaces/client';
 import { BillService } from './services/bill/bill.service';
+import { DetailBill } from './interfaces/detail-bill';
+import { DetailBillService } from './services/detail-bill/detail-bill.service';
+import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-fact',
@@ -26,42 +29,44 @@ export class FactComponent implements OnInit {
   selectedClient: any;
   createdProduct: any = null;
   productId: number | null = null;
-  products: {id: number, name: string, sell_price: number}[] = [];
+  products: { id: number, name: string, sell_price: number }[] = [];
   selectedProduct: any;
   quantity: number = 1;
   total: number = 0;
-  addedProducts: {name: string, sell_price: number, quantity: number, total: number}[] = [];
+  addedProducts: { name: string, sell_price: number, quantity: number, total: number }[] = [];
   totalValue: number = 0;
   selectedClientId!: number;
   isFormActive: boolean = false;
   isButtonVisible: boolean = true;
   isClientVisible: boolean = true;
-  makeBillProduct: any[] = [];
   employees: any[] = [];
   date!: string;
   time!: string;
   selectedEmployeeId: string | null = null;
+  detailsBill: any[] = []
+
 
   constructor(
     private clientService: ClientService,
     private serviceProduct: ProductService,
     private employeeService: EmployeeService,
-    private billService: BillService
-  ){}
+    private billService: BillService,
+    private detailBillService: DetailBillService
+  ) { }
 
   ngOnInit(): void {
     this.getClients()
     this.getProduct()
   }
 
-  getClients(): void{
+  getClients(): void {
     this.clientService.getClient().subscribe(
       (data) => this.clients = data,
       (err) => console.error('Error al obtener los clientes', err)
     )
   }
 
-  getEmployee(): void{
+  getEmployee(): void {
     this.employeeService.getEmployee().subscribe({
       next: (data) => {
         this.employees = data;
@@ -73,12 +78,12 @@ export class FactComponent implements OnInit {
     })
   }
 
-  onElementSelect(event: any){
+  onElementSelect(event: any) {
     this.selectedClient = event.target.value;
     console.log('Elemento seleccionado', this.selectedClient)
   }
 
-  getProduct(): void{
+  getProduct(): void {
     this.serviceProduct.getProducts().subscribe({
       next: (data) => {
         this.products = data;
@@ -148,54 +153,111 @@ export class FactComponent implements OnInit {
     return `${hours}:${minutes}:${seconds}`;
   }
 
-  makeBill(){
-    this.addedProducts.forEach(product => {
-      const productTotal = product.sell_price * product.quantity;
-      this.totalBill += productTotal;
-
-      this.makeBillProduct.push(product)
-
-    })
-    const currentDate = this.getCurrentDate();
-    const currentTime = this.getCurrentTime();
-    this.date = currentDate;
-    this.time = currentTime;
-    console.log(this.date)
-    console.log(this.time)
-    console.log(this.selectedClientId)
-    this.selectedEmployeeId = '1';
-    console.log(this.selectedEmployeeId)
-
-
-
-    this.getEmployee();
-  }
-
-  formBill: Bill = {
+  formBill: any = {
     make_date: '', // manteniendo snake_case
     id_client: 0, // manteniendo snake_case
-    id_employee: 1 // manteniendo snake_case
-};
+    id_employee: 1,
+  };
 
-createBill() {
-  // Asegúrate de que id_client tiene un valor numérico
-  console.log('ID del cliente antes de enviar:', this.formBill.id_client);
+  createBill() {
+    console.log('ID del cliente antes de enviar:', this.formBill.id_client);
 
-  const currentDateTime = this.getCurrentDateTime();
-  this.formBill.make_date = currentDateTime; // manteniendo snake_case
+    const currentDateTime = this.getCurrentDateTime();
+    this.formBill.make_date = currentDateTime;
+    this.formBill.id_client = Number(this.formBill.id_client);
 
-  // Muestra el objeto completo
-  console.log('Datos a enviar:', this.formBill);
-
-  this.billService.createBill(this.formBill).subscribe({
+    // Crear la factura
+    this.billService.createBill(this.formBill).subscribe({
       next: (response) => {
-          console.log('Factura creada exitosamente:', response);
+        console.log('Factura creada exitosamente:', response);
+        const facturaId = response.id;
+        console.log('Soy el id de la factura despues de crearlo', facturaId);
+
+        const detallesFalsos = this.getDetailsFalse();
+
+        detallesFalsos.forEach((detalles) => {
+          detalles.id_bill = facturaId;
+          console.log("Somos los detalles uno por uno que se van a enviar", detalles)
+          this.detailBillService.createDetailBill(detalles).subscribe({
+            next: (res) => {
+              console.log('Detalle creado:', res);
+            },
+            error: (err) => {
+              console.error('Error al crear detalles', err);
+            }
+          })
+        })
+
+        // Obtener el último ID de la factura creada y luego crear los detalles
       },
       error: (error) => {
-          console.error('Error al crear la factura:', error);
+        console.error('Error al crear la factura:', error);
       }
-  });
-}
+    });
+  }
+
+  getDetailsFalse() {
+    return [
+      { "amount": 1, "unit_price": 7000, "id_product": 27, "id_bill": 0 }, // Mapea los valores correctamente
+      { "amount": 1, "unit_price": 2500, "id_product": 27, "id_bill": 0 }
+    ];
+  }
+
+  getDetailsFals() {
+    return { amount: 1, unit_price: 2500, id_product: 1, id_bill: 1 }
+  }
+
+
+  formDetailBill: DetailBill = {
+    amount: this.formBill.quantity,
+    unit_price: this.formBill.sell_price,
+    id_product: 1,
+    id_bill: 0,
+  }
+
+  details: any = this.getDetailsFalse();
+
+  createDetails() {
+    console.log("Estos son los detalles falsos que se envían: " + JSON.stringify(this.details, null, 2));
+
+
+
+    console.log(this.formDetailBill)
+
+    this.detailBillService.createDetailBill(this.details).subscribe({
+      next: (res) => {
+        console.log('Detalles creados exitosamente', res)
+      },
+      error: (err) => {
+        console.error('Error al crear los detalles', err)
+      }
+    })
+  }
+
+
+
+  getDetailsBill(): any[] {
+    for (let details of this.addedProducts)
+      this.detailsBill.push(details)
+    return this.detailsBill;
+  }
+
+  /*
+  getIdBills(): number {
+    console.log('Soy el que trae los ids');
+    console.log('Voy a recorrer todas las facturas y recojer el ultimo id');
+
+    return new Promise((resolve) => {
+      this.billService.getBill().subscribe({
+        next: (res) => {
+          const idBills = res.length + 1; // Suponiendo que quieres el último id + 1
+          console.log("Este es el id obtenido:", idBills);
+          resolve(idBills); // Resolución de la promesa
+        }
+      });
+    });
+  }
+  */
 
 
   getCurrentDateTime(): string {
@@ -224,4 +286,25 @@ createBill() {
     }
     return this.selectedClientId !== null || this.isFormActive;
   }
+
+  /*
+  createDetailBill(idBill: number) {
+    const array = this.getDetailsFalse().map(detail => ({
+      ...detail,
+      id_bill: idBill // Asigna el ID correcto aquí
+    }));
+
+    console.log("Array de detalles con ID de factura:", array);
+
+    this.detailBillService.createDetailBill(array).subscribe({
+      next: (res) => {
+        console.log('Detalles creados exitosamente:', res);
+      },
+      error: (err) => {
+        console.error('Error al crear los detalles:', err);
+      }
+    });
+  }
+    */
+
 }

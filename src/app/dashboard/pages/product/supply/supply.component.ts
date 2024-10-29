@@ -17,10 +17,15 @@ import { NgxPaginationModule } from 'ngx-pagination';
 })
 export class SupplyComponent implements OnInit {
 
+  //Paginacion y Filter
   p: number = 1;
-  isOpenModal: boolean = false
   pageSize: number = 10;
   searchText: string = '';
+
+  //Modales
+  isOpenModal: boolean = false
+
+  //Entidades
   supplies: Supply[] = []
   categories: any[] = []
   supplyId: number | null = null;
@@ -33,6 +38,8 @@ export class SupplyComponent implements OnInit {
     this.getCategory()
     this.getSupply()
   }
+
+  //SECCION ENTIDADES ---------------------------------------------
 
   getSupply(): void {
     this.getSupplyService.getSupply().subscribe({
@@ -58,11 +65,6 @@ export class SupplyComponent implements OnInit {
     )
   }
 
-
-  editSupply(supply: any) {
-    supply.isEditing = true;
-  }
-
   updateSupply(supply: any) {
     console.log("ID del suministro:", supply.id); // Verifica que el ID no sea null
 
@@ -76,10 +78,6 @@ export class SupplyComponent implements OnInit {
         console.error('Error al actualizar el insumo', error);
       }
     );
-  }
-
-  formatTotal(value: number): string {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
   deleteSupplyById(supplyId: number): void{
@@ -96,6 +94,14 @@ export class SupplyComponent implements OnInit {
     }
   }
 
+  //FIN SECCION ENTIDADES ---------------------------------------------
+
+  //SECCION MODALES ----------------------------------------------
+
+  editSupply(supply: any) {
+    supply.isEditing = true;
+  }
+
   // Cancelar la edición y restaurar el estado anterior
   cancelEdit(supply: any) {
     supply.isEditing = false;
@@ -104,13 +110,6 @@ export class SupplyComponent implements OnInit {
 
   get totalPages(): number {
     return Math.ceil(this.supplies.length / this.pageSize);
-  }
-
-  getIndexSupplies(){
-    return this.supplies.map((supply, index) => ({
-      ...supply,
-      index: index + 1
-    }));
   }
 
   openModal(supplyId: number){
@@ -132,5 +131,11 @@ export class SupplyComponent implements OnInit {
       console.error('El ID del insumo es nulo')
     }
   }
+
+  formatTotal(value: number): string {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  //FIN SECCION MODALES ----------------------------------------------
 
 }

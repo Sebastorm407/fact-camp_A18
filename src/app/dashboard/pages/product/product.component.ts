@@ -18,10 +18,15 @@ import { NgxPaginationModule } from 'ngx-pagination';
 })
 export class ProductComponent implements OnInit{
 
+  //Paginacion y Filter
   p: number = 1;
-  isOpenModal: boolean = false;
   pageSize: number = 10;
   searchText: string = '';
+
+  //Modal
+  isOpenModal: boolean = false;
+
+  //Productos
   createdProduct: any = null;
   productId: number | null = null;
   products: {id: number, name: string, sell_price: number}[] = [];
@@ -38,9 +43,7 @@ export class ProductComponent implements OnInit{
       this.getProducts();
   }
 
-  formatTotal(value: number): string {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+  //SECCION PRODUCTOS ----------------------------------------
 
   getProducts(): void{
     this.formService.getProducts().subscribe({
@@ -56,20 +59,6 @@ export class ProductComponent implements OnInit{
     })
   }
 
-  loadProducts(){
-    this.formService.getProducts().subscribe(
-      (data: any[]) => {
-        this.products = data.map((product, index) => ({
-          ...product,
-          index: index + 1
-        }));
-      },
-      (error) => {
-        console.error('Error al cargar los productos', error)
-      }
-    )
-  }
-
   updateProduct(product: any){
     console.log("Id del producto", product.id);
 
@@ -77,7 +66,7 @@ export class ProductComponent implements OnInit{
       (response) => {
         product.isEditing = false;
         console.log('Producto actualizado exitosamente', response)
-        this.loadProducts()
+        this.getProducts()
       },
       (error) => {
         console.error('Error al actualizar el producto', error)
@@ -102,6 +91,10 @@ export class ProductComponent implements OnInit{
   editProduct(supply: any) {
     supply.isEditing = true;
   }
+
+  //FIN SECCION PRODUCTOS ----------------------------------------
+
+  //SECCION MODALES Y DEMAS -------------------------------------------
 
   cancelEdit(supply: any) {
     supply.isEditing = false;
@@ -131,4 +124,10 @@ export class ProductComponent implements OnInit{
       console.error('El ID del producto es nulo');
     }
   }
+
+  formatTotal(value: number): string {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  //FIN SECCION MODALES Y DEMAS -------------------------------------------
 }

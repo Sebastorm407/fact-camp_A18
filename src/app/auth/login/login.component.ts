@@ -57,6 +57,7 @@ export class LoginComponent implements OnInit{
 
   extraer(){
     /*
+
     this.authService.getEmployeeById(id).subscribe((data: LoginEmployee) => {
       this.employee = data;
       console.log(data)

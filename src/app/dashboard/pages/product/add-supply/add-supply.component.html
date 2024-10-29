@@ -76,10 +76,10 @@
 </div>
 
 <section>
-  <div *ngIf="isOpenEliminate" class="fixed inset-0 flex items-center justify-center z-50">
-    <div class="bg-gray-800 bg-opacity-50 fixed inset-0"></div>
+  <div *ngIf="isOpenEliminate" class="fixed inset-0 text-gray-100 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-gray-800 bg-opacity-50"></div>
 
-    <div class="bg-gray-800 p-6 rounded-lg shadow-lg z-50 max-w-sm w-full">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full">
       <h2 class="text-xl mb-10 text-lime-50">Eliminaras esta Categoria y cada producto asociado a ella, Seguro?</h2>
 
       <!-- Botones de aceptar y cancelar -->
@@ -97,7 +97,7 @@
 
 
 <div *ngIf="isOpenCategories"
-  class="fixed inset-0 text-gray-100 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+  class="fixed inset-0 text-gray-100 bg-gray-800 bg-opacity-50 flex items-start justify-center z-30">
   <div class="bg-gray-900 p-6 m-32 shadow-lg max-w-2xl w-full rounded-3xl">
 
     <div class="mb-12 flex justify-between">
