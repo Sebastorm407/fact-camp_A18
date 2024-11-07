@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { GetSupplyService } from '../product/supply/services/get-supply.service';
 import { CommonModule } from '@angular/common';
@@ -16,11 +16,12 @@ import { Employee } from '../fact/interfaces/employee';
 import { FilterFactPipe } from './services/filter/filter-fact.pipe';
 import { DetailBillService } from '../fact/services/detail-bill/detail-bill.service';
 import { subscribe } from 'diagnostics_channel';
+import { ReportsService } from './services/report/reports.service';
 
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [RouterOutlet ,HttpClientModule, CommonModule, ReactiveFormsModule, NgxPaginationModule, FormsModule, FilterFactPipe],
+  imports: [HttpClientModule, RouterOutlet ,HttpClientModule, CommonModule, ReactiveFormsModule, NgxPaginationModule, FormsModule, FilterFactPipe],
   templateUrl: './report.component.html',
   styleUrl: './report.component.css'
 })
@@ -61,7 +62,9 @@ export class ReportComponent implements OnInit{
     private fb: FormBuilder,
     private formService: FormService,
     private billService: BillService,
-    private detailBillService: DetailBillService
+    private detailBillService: DetailBillService,
+    private reportService: ReportsService,
+    private http: HttpClient
   ){
   }
 
@@ -117,26 +120,28 @@ export class ReportComponent implements OnInit{
     return this.detailBillService.getDetailBill();
   }
 
-  openDetails(bill: any){
-    this.selectedDetails = [];
-    this.selectedBill = bill;
-    console.log(this.selectedBill.index)
+  openDetails(bill: any) {
+    this.selectedDetails = []; // Limpia los detalles seleccionados
+    this.selectedBill = bill; // Guarda la factura seleccionada
+    console.log(this.selectedBill.index);
 
-    this.getDetails().subscribe({
-      next: (detailsBill: any[]) => {
-        // Iteramos sobre los detalles para encontrar el que coincide con el ID seleccionado
-        for (let details of detailsBill) {
-          if (details.id_bill.id === this.selectedBill.index) {
-            this.selectedDetails.push(details);  // Guardamos los detalles que coinciden
-          }
+    this.reportService.getDetails().subscribe({
+        next: (detailBill: any) => {
+            console.log(detailBill);
+            detailBill.forEach((detail: any) => { // Asegúrate de iterar sobre cada detalle individual
+                if (this.selectedBill.id === detail.id_bill.id) { // Compara el id de la factura
+                    this.selectedDetails.push(detail); // Agrega el detalle completo al array
+                    console.log(this.selectedDetails);
+                }
+            });
+        },
+        error: (err: any) => {
+            console.error("Error al obtener el detalle:", err);
         }
-      },
-      error: (err: any) => {
-        console.error("Error al obtener los detalles:", err);
-      }
     });
-    this.isOpenDetails = true;
-  }
+
+    this.isOpenDetails = true; // Abre la vista de detalles
+}
 
   closeDetails(){
     this.isOpenDetails = false;

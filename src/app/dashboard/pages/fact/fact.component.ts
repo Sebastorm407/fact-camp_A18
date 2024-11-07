@@ -198,8 +198,8 @@ export class FactComponent implements OnInit {
 
   getDetailsFalse() {
     return [
-      { "amount": 1, "unit_price": 7000, "id_product": 27, "id_bill": 0 }, // Mapea los valores correctamente
-      { "amount": 1, "unit_price": 2500, "id_product": 27, "id_bill": 0 }
+      { "amount": 1, "unit_price": 7000, "id_product": 1, "id_bill": 0 }, // Mapea los valores correctamente
+      { "amount": 1, "unit_price": 2500, "id_product": 1, "id_bill": 0 }
     ];
   }
 
