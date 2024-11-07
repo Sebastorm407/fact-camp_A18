@@ -34,6 +34,7 @@ export class FactComponent implements OnInit {
   quantity: number = 1;
   total: number = 0;
   addedProducts: { name: string, sell_price: number, quantity: number, total: number }[] = [];
+  addedDetails: { amount: number, unit_price: number, id_product: number, id_bill: number}[] = [];
   totalValue: number = 0;
   selectedClientId!: number;
   isFormActive: boolean = false;
@@ -120,6 +121,16 @@ export class FactComponent implements OnInit {
         quantity: this.quantity,
         total: this.total
       };
+
+      const detailsData = {
+        amount: this.quantity,
+        unit_price: this.selectedProduct.sell_price,
+        id_product: this.selectedProduct.id,
+        id_bill: 0
+      }
+
+
+      this.addedDetails.push(detailsData);
       this.addedProducts.push(productData);
       this.totalValue += productData.total;
       console.log('Producto agregado', productData);
@@ -169,13 +180,15 @@ export class FactComponent implements OnInit {
     // Crear la factura
     this.billService.createBill(this.formBill).subscribe({
       next: (response) => {
+
+
         console.log('Factura creada exitosamente:', response);
-        const facturaId = response.id;
-        console.log('Soy el id de la factura despues de crearlo', facturaId);
+        const facturaId = response.id
 
         const detallesFalsos = this.getDetailsFalse();
+        console.log('Somos el array de los productos que se han metido en la lista', this.addedProducts)
 
-        detallesFalsos.forEach((detalles) => {
+        this.addedDetails.forEach((detalles) => {
           detalles.id_bill = facturaId;
           console.log("Somos los detalles uno por uno que se van a enviar", detalles)
           this.detailBillService.createDetailBill(detalles).subscribe({
@@ -216,15 +229,15 @@ export class FactComponent implements OnInit {
   }
 
   details: any = this.getDetailsFalse();
+  detailss: any = this.formDetailBill;
 
   createDetails() {
+    console.log('Soy los detalles que recojo del formulario verdadero', this.detailss)
+
     console.log("Estos son los detalles falsos que se envían: " + JSON.stringify(this.details, null, 2));
-
-
-
     console.log(this.formDetailBill)
 
-    this.detailBillService.createDetailBill(this.details).subscribe({
+    this.detailBillService.createDetailBill(this.detailss).subscribe({
       next: (res) => {
         console.log('Detalles creados exitosamente', res)
       },
@@ -234,31 +247,11 @@ export class FactComponent implements OnInit {
     })
   }
 
-
-
   getDetailsBill(): any[] {
     for (let details of this.addedProducts)
       this.detailsBill.push(details)
     return this.detailsBill;
   }
-
-  /*
-  getIdBills(): number {
-    console.log('Soy el que trae los ids');
-    console.log('Voy a recorrer todas las facturas y recojer el ultimo id');
-
-    return new Promise((resolve) => {
-      this.billService.getBill().subscribe({
-        next: (res) => {
-          const idBills = res.length + 1; // Suponiendo que quieres el último id + 1
-          console.log("Este es el id obtenido:", idBills);
-          resolve(idBills); // Resolución de la promesa
-        }
-      });
-    });
-  }
-  */
-
 
   getCurrentDateTime(): string {
     const now = new Date();
@@ -286,25 +279,5 @@ export class FactComponent implements OnInit {
     }
     return this.selectedClientId !== null || this.isFormActive;
   }
-
-  /*
-  createDetailBill(idBill: number) {
-    const array = this.getDetailsFalse().map(detail => ({
-      ...detail,
-      id_bill: idBill // Asigna el ID correcto aquí
-    }));
-
-    console.log("Array de detalles con ID de factura:", array);
-
-    this.detailBillService.createDetailBill(array).subscribe({
-      next: (res) => {
-        console.log('Detalles creados exitosamente:', res);
-      },
-      error: (err) => {
-        console.error('Error al crear los detalles:', err);
-      }
-    });
-  }
-    */
 
 }
