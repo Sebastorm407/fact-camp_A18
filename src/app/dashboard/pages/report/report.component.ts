@@ -120,6 +120,10 @@ export class ReportComponent implements OnInit{
     return this.detailBillService.getDetailBill();
   }
 
+  subtotal: number = 0;
+  IVA: number = 0.19;
+  total: number = 0;
+
   openDetails(bill: any) {
     this.selectedDetails = []; // Limpia los detalles seleccionados
     this.selectedBill = bill; // Guarda la factura seleccionada
@@ -131,9 +135,13 @@ export class ReportComponent implements OnInit{
             detailBill.forEach((detail: any) => { // Asegúrate de iterar sobre cada detalle individual
                 if (this.selectedBill.id === detail.id_bill.id) { // Compara el id de la factura
                     this.selectedDetails.push(detail); // Agrega el detalle completo al array
+                    this.subtotal += detail.unit_price;
+                    console.log('Soy la suma de todas los detalles', this.subtotal)
                     console.log(this.selectedDetails);
                 }
             });
+            this.total = this.subtotal + (this.subtotal * this.IVA);
+            console.log(this.total, 'Soy el IVA APLICADO')
         },
         error: (err: any) => {
             console.error("Error al obtener el detalle:", err);

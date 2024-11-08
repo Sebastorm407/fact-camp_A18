@@ -97,7 +97,6 @@ export class FactComponent implements OnInit {
 
   selectItem(product: any) {
     this.selectedProduct = product;
-    console.log(this.selectedProduct)
   }
 
   calculateTotal() {
@@ -133,8 +132,6 @@ export class FactComponent implements OnInit {
       this.addedDetails.push(detailsData);
       this.addedProducts.push(productData);
       this.totalValue += productData.total;
-      console.log('Producto agregado', productData);
-
       this.selectedProduct = null; // Esto hará que el color de la fila vuelva a la normalidad
       this.quantity = 1;
       // Aquí puedes hacer la lógica para enviar los datos a donde necesites
@@ -171,8 +168,6 @@ export class FactComponent implements OnInit {
   };
 
   createBill() {
-    console.log('ID del cliente antes de enviar:', this.formBill.id_client);
-
     const currentDateTime = this.getCurrentDateTime();
     this.formBill.make_date = currentDateTime;
     this.formBill.id_client = Number(this.formBill.id_client);
@@ -180,17 +175,11 @@ export class FactComponent implements OnInit {
     // Crear la factura
     this.billService.createBill(this.formBill).subscribe({
       next: (response) => {
-
-
-        console.log('Factura creada exitosamente:', response);
         const facturaId = response.id
 
-        const detallesFalsos = this.getDetailsFalse();
-        console.log('Somos el array de los productos que se han metido en la lista', this.addedProducts)
 
         this.addedDetails.forEach((detalles) => {
           detalles.id_bill = facturaId;
-          console.log("Somos los detalles uno por uno que se van a enviar", detalles)
           this.detailBillService.createDetailBill(detalles).subscribe({
             next: (res) => {
               console.log('Detalle creado:', res);
@@ -209,16 +198,6 @@ export class FactComponent implements OnInit {
     });
   }
 
-  getDetailsFalse() {
-    return [
-      { "amount": 1, "unit_price": 7000, "id_product": 1, "id_bill": 0 }, // Mapea los valores correctamente
-      { "amount": 1, "unit_price": 2500, "id_product": 1, "id_bill": 0 }
-    ];
-  }
-
-  getDetailsFals() {
-    return { amount: 1, unit_price: 2500, id_product: 1, id_bill: 1 }
-  }
 
 
   formDetailBill: DetailBill = {
@@ -228,14 +207,10 @@ export class FactComponent implements OnInit {
     id_bill: 0,
   }
 
-  details: any = this.getDetailsFalse();
+  //Aqui hay algo raro
   detailss: any = this.formDetailBill;
 
   createDetails() {
-    console.log('Soy los detalles que recojo del formulario verdadero', this.detailss)
-
-    console.log("Estos son los detalles falsos que se envían: " + JSON.stringify(this.details, null, 2));
-    console.log(this.formDetailBill)
 
     this.detailBillService.createDetailBill(this.detailss).subscribe({
       next: (res) => {

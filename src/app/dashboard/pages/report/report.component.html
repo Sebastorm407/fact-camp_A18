@@ -163,65 +163,124 @@
 
 <section *ngIf="isOpenDetails">
   <div class="fixed h-screen inset-0 text-gray-100 bg-gray-800 bg-opacity-20 flex items-center justify-center z-50">
-    <div class="bg-gray-800 p-6 rounded-lg shadow-lg max-w-2xl w-full">
-      <label for="name" class="text-xl font-semibold mb-4">Detalle Factura N.{{selectedBill?.id}}</label>
+    <div class="bg-gray-900 p-8 rounded-lg shadow-lg max-w-3xl w-full">
 
-      <div class="flex flex-row mt-6">
-        <div class="ml-10">
-          <!-- Detalles del Cliente -->
-          <div class="mt-4" *ngIf="selectedBill.client">
-            <p><strong>Id_Cliente:</strong> {{selectedBill.client.number_id}}</p>
-            <p><strong>Nombre:</strong> {{selectedBill.client.name}}</p>
-            <p><strong>Apellido:</strong> {{selectedBill.client.last_name}}</p>
-            <p><strong>Fecha de Nacimiento:</strong> {{selectedBill.client.birthdate}}</p>
-            <p><strong>Direccion:</strong> {{selectedBill.client.address}}</p>
-            <p><strong>Telefono:</strong> {{selectedBill.client.phone_number}}</p>
+      <!-- Encabezado de la Factura -->
+      <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-bold">Factura N.{{selectedBill?.id}}</h2>
+          <p class="text-gray-400 text-sm">Fecha: {{ selectedBill?.make_date | date: 'dd/MM/yyyy' }}</p>
+        </div>
+        <img class="rounded-3xl w-36" src="assets/images/bocadilloLogo.jpeg" alt="Logo">
+      </div>
+
+      <!-- Información del Cliente y Empleado -->
+      <div class="grid grid-cols-2 gap-8 mb-8">
+        <!-- Información del Cliente -->
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Detalles del Cliente</h3>
+          <div *ngIf="selectedBill.client" class="text-gray-300">
+            <p><strong>Id Cliente:</strong> {{selectedBill.client.number_id}}</p>
+            <p><strong>Nombre:</strong> {{selectedBill.client.name}} {{selectedBill.client.last_name}}</p>
+            <p><strong>Teléfono:</strong> {{selectedBill.client.phone_number}}</p>
+            <p><strong>Dirección:</strong> {{selectedBill.client.address}}</p>
             <p><strong>Ciudad:</strong> {{selectedBill.client.city.name}}</p>
-            <p><strong>Genero:</strong> {{selectedBill.client.gender.name}}</p>
           </div>
         </div>
-        <div class="ml-10">
-          <!-- Detalles del Empleado -->
-          <div class="mt-4" *ngIf="selectedBill.employee">
-            <p><strong>Id_Empleado:</strong> {{selectedBill.employee.number_id}}</p>
-            <p><strong>Nombre:</strong> {{selectedBill.employee.name}}</p>
-            <p><strong>Apellido:</strong> {{selectedBill.employee.last_name}}</p>
-            <p><strong>Fecha de Nacimiento:</strong> {{selectedBill.employee.birthdate}}</p>
-            <p><strong>Direccion:</strong> {{selectedBill.employee.address}}</p>
-            <p><strong>Telefono:</strong> {{selectedBill.employee.phone_number}}</p>
+
+        <!-- Información del Empleado -->
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Detalles del Empleado</h3>
+          <div *ngIf="selectedBill.employee" class="text-gray-300">
+            <p><strong>Id Empleado:</strong> {{selectedBill.employee.number_id}}</p>
+            <p><strong>Nombre:</strong> {{selectedBill.employee.name}} {{selectedBill.employee.last_name}}</p>
+            <p><strong>Teléfono:</strong> {{selectedBill.employee.phone_number}}</p>
+            <p><strong>Dirección:</strong> {{selectedBill.employee.address}}</p>
             <p><strong>Ciudad:</strong> {{selectedBill.employee.city.name}}</p>
-            <p><strong>Genero:</strong> {{selectedBill.employee.gender.name}}</p>
           </div>
         </div>
-
-
-
       </div>
 
+      <!-- Tabla de Productos -->
+      <div class="mt-10 border border-gray-200 dark:border-gray-700 md:rounded-lg max-h-72 overflow-y-auto">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-800">
+              <tr>
+                <th scope="col"
+                  class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  <button class="flex items-center gap-x-3 focus:outline-none">
+                    <span>Cantidad</span>
+                  </button>
+                </th>
 
-      <!--Detalles del Producto-->
-      <div class="mt-4 flex flex-col" *ngIf="selectedDetails.length > 0">
-        <div *ngFor="let detail of selectedDetails">
-          <p><strong>Id Detalle:</strong> {{detail.id}}</p>
-          <p><strong>Cantidad:</strong> {{detail.amount}}</p>
-          <p><strong>Valor Unitario:</strong> {{detail.unit_price}}</p>
-          <p><strong>Producto:</strong> {{detail.id_product.name}}</p>
-          <p><strong>Precio Unitario:</strong> {{detail.id_product.sell_price}}</p>
-          <p><strong>Total:</strong> {{detail.id_product.sell_price * detail.amount}}</p>
+                <th scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  Descripción
+                </th>
+                <th scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  Precio Unitario
+                </th>
+                <th scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  Importe
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+              <tr *ngFor="let detail of selectedDetails">
+                <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                  <div class="inline px-3 py-2 text-sm rounded-full text-emerald-500 gap-x-2 ">
+                    {{ detail.amount }}
+                  </div>
+                </td>
+                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                  <div class="text-gray-100">
+                    {{ detail.id_product.name }}
+                  </div>
+                </td>
+                <td class="px-4 py-4 justify-center text-sm whitespace-nowrap">
+                  <div class="text-gray-100">
+                    {{ detail.unit_price }}
+                  </div>
+                </td>
+                <td class="px-4 py-4 justify-center text-sm whitespace-nowrap">
+                  <div class="text-gray-100">
+                    {{ detail.unit_price * detail.amount }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <!-- Detalles del Producto -->
 
-      <!-- Botones de aceptar y cancelar -->
-      <div class="flex justify-end space-x-2 mt-8">
-        <button
-          class="bg-red-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200"
-          type="button" (click)="closeDetails()">Rechazar</button>
-        <button
-          class="bg-blue-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200"
-          type="submit" (click)="accept()">Aceptar</button>
+      <!-- Resumen de la Factura -->
+      <div class="flex justify-end border-t border-gray-700 pt-4">
+        <div class="w-1/2">
+          <div class="flex justify-between py-2 mr-10 text-lg font-medium text-gray-200">
+            <span>Subtotal:</span>
+            <span>{{ subtotal | currency }}</span>
+          </div>
+          <div class="flex justify-between py-2 mr-10 text-lg font-medium text-gray-200">
+            <span>IVA (19%):</span>
+            <span>{{ subtotal * IVA | currency }}</span>
+          </div>
+          <div class="flex justify-between py-2 mr-10 text-xl font-bold text-gray-100">
+            <span>Total:</span>
+            <span>{{ total | currency }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="flex justify-end space-x-4 mt-8">
+        <button class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded" (click)="closeDetails()">Rechazar</button>
+        <button class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded" (click)="accept()">Aceptar</button>
       </div>
     </div>
   </div>
 </section>
+
