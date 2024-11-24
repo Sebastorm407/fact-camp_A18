@@ -23,13 +23,12 @@ export const routes: Routes = [
     {path: 'product', component: ProductComponent, children: [
       {path: 'add-product', component: AddProductComponent},
     ]},
-    {path: 'graphic', component: GraphicComponent, children: [
+    {path: 'employee', component: GraphicComponent, children: [
       {path: 'add-employee', component: AddEmployeeComponent},
     ]},
     {path: 'report', component: ReportComponent, children: [
       {path: 'fact', component: FactComponent}
     ]},
-    {path: 'employee', component: EmployeeComponent},
     {path: 'client', component: ClientComponent, children: [
       {path: 'add-client', component: AddClientComponent}
     ]},
