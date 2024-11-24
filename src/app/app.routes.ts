@@ -13,6 +13,7 @@ import { AddProductComponent } from './dashboard/pages/product/add-product/add-p
 import { AddSupplyComponent } from './dashboard/pages/product/add-supply/add-supply.component';
 import { LoginComponent } from './auth/login/login.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+import { AddEmployeeComponent } from './dashboard/pages/graphic/add-employee/add-employee.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -21,7 +22,9 @@ export const routes: Routes = [
     {path: 'product', component: ProductComponent, children: [
       {path: 'add-product', component: AddProductComponent},
     ]},
-    {path: 'graphic', component: GraphicComponent},
+    {path: 'graphic', component: GraphicComponent, children: [
+      {path: 'add-employee', component: AddEmployeeComponent},
+    ]},
     {path: 'report', component: ReportComponent, children: [
       {path: 'fact', component: FactComponent}
     ]},

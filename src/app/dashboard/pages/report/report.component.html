@@ -264,10 +264,6 @@
             <span>Subtotal:</span>
             <span>{{ subtotal | currency }}</span>
           </div>
-          <div class="flex justify-between py-2 mr-10 text-lg font-medium text-gray-200">
-            <span>IVA (19%):</span>
-            <span>{{ subtotal * IVA | currency }}</span>
-          </div>
           <div class="flex justify-between py-2 mr-10 text-xl font-bold text-gray-100">
             <span>Total:</span>
             <span>{{ total | currency }}</span>
@@ -277,8 +273,8 @@
 
       <!-- Botones de Acción -->
       <div class="flex justify-end space-x-4 mt-8">
-        <button class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded" (click)="closeDetails()">Rechazar</button>
-        <button class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded" (click)="accept()">Aceptar</button>
+        <button class="bg-green-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200" type="button" (click)="generatePDF(bill)">Generar PDF</button>
+        <button class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded" (click)="closeDetails()">Cerrar</button>
       </div>
     </div>
   </div>

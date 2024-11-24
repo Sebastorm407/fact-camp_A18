@@ -44,27 +44,32 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.extraer()
   }
-
-  /*
-  login(): void{
-    this.authService.login(this.number_id, this.password).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
-      error: (err) => console.error('Login failed', err)
-    })
-  }
-    */
 
   extraer(){
-    /*
-
-    this.authService.getEmployeeById(id).subscribe((data: LoginEmployee) => {
+    this.authService.getEmployee('1').subscribe((data: LoginEmployee) => {
       this.employee = data;
       console.log(data)
-      console.log('Identification' + data.number_id);
+      console.log('Identification' + data.numberId);
     })
-    */
   }
+
+  loginEmployee(){
+
+    const employeeId = this.form.value.id;
+    const passwordId = this.form.value.password;
+
+    if(this.employee){
+      if(employeeId === this.employee.numberId && passwordId === this.employee.password_id.toString()){
+        this.router.navigate(['/dashboard'])
+    }else{
+      console.log('Eres un gil')
+      }
+    }
+
+  }
+}
 
   /*
   makeBill(){
@@ -127,4 +132,3 @@ export class LoginComponent implements OnInit{
       }
     }
     */
-  }

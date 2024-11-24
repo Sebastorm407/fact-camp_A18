@@ -17,6 +17,7 @@ import { FilterFactPipe } from './services/filter/filter-fact.pipe';
 import { DetailBillService } from '../fact/services/detail-bill/detail-bill.service';
 import { subscribe } from 'diagnostics_channel';
 import { ReportsService } from './services/report/reports.service';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-report',
@@ -31,6 +32,7 @@ export class ReportComponent implements OnInit{
 
   // Variable para almacenar la factura seleccionada
   selectedBill: any = null;
+  selectedBillPdf: any = null
 
   //Este array recoge los detalles que se han recorrido con un for cuando se traen de
   //la factura que se ha seleccioando, se hace un push y se muestra en el HTML
@@ -127,21 +129,16 @@ export class ReportComponent implements OnInit{
   openDetails(bill: any) {
     this.selectedDetails = []; // Limpia los detalles seleccionados
     this.selectedBill = bill; // Guarda la factura seleccionada
-    console.log(this.selectedBill.index);
 
     this.reportService.getDetails().subscribe({
         next: (detailBill: any) => {
-            console.log(detailBill);
             detailBill.forEach((detail: any) => { // Asegúrate de iterar sobre cada detalle individual
                 if (this.selectedBill.id === detail.id_bill.id) { // Compara el id de la factura
                     this.selectedDetails.push(detail); // Agrega el detalle completo al array
                     this.subtotal += detail.unit_price;
-                    console.log('Soy la suma de todas los detalles', this.subtotal)
-                    console.log(this.selectedDetails);
                 }
             });
             this.total = this.subtotal + (this.subtotal * this.IVA);
-            console.log(this.total, 'Soy el IVA APLICADO')
         },
         error: (err: any) => {
             console.error("Error al obtener el detalle:", err);
@@ -149,6 +146,7 @@ export class ReportComponent implements OnInit{
     });
 
     this.isOpenDetails = true; // Abre la vista de detalles
+    return this.selectedBill.id;
 }
 
   closeDetails(){
@@ -197,5 +195,83 @@ export class ReportComponent implements OnInit{
   }
 
   //FIN MODALES Y DEMAS -----------------------------------------------
+
+  selectBill(bill: any) {
+    this.selectedBillPdf = bill;  // Asignamos la factura seleccionada
+    console.log('Factura seleccionada', this.selectedBillPdf);
+  }
+
+  generatePDF(bill: any) {
+    if (!this.selectedBillPdf) {
+      console.error('No se ha seleccionado ninguna factura');
+      return;
+    }
+
+    const doc = new jsPDF();
+
+    // Título
+    doc.setFontSize(18);
+    doc.text('Factura N. ' + this.selectedBillPdf.id, 14, 20);
+
+    // Detalles del Cliente
+    doc.setFontSize(12);
+    doc.text('Cliente: ' + this.selectedBillPdf.client?.name + ' ' + this.selectedBillPdf.client?.last_name, 14, 30);
+    doc.text('ID Cliente: ' + this.selectedBillPdf.client?.number_id, 14, 40);
+    doc.text('Dirección: ' + this.selectedBillPdf.client?.address, 14, 50);
+    doc.text('Teléfono: ' + this.selectedBillPdf.client?.phone_number, 14, 60);
+
+    // Detalles del Empleado
+    doc.text('Empleado: ' + this.selectedBillPdf.employee?.name + ' ' + this.selectedBillPdf.employee?.last_name, 14, 70);
+    doc.text('ID Empleado: ' + this.selectedBillPdf.employee?.number_id, 14, 80);
+
+    // Tabla de productos
+    let yPosition = 100;
+    doc.setFontSize(10);
+    doc.text('Cantidad    |    Descripción    |    Precio Unitario    |    Importe', 14, yPosition);
+    yPosition += 10;
+
+    // Obtener los detalles de la factura seleccionada
+    this.reportService.getDetails().subscribe({
+      next: (details: any) => {
+        details.forEach((detail: any) => {
+          if (detail.id_bill?.id === this.selectedBillPdf.id) {
+            // Imprimir los detalles de la factura seleccionada
+            doc.text(
+              `   ${detail.amount}                ${detail.id_product.name}                ${detail.unit_price}             ${detail.unit_price * detail.amount}`,
+              14,
+              yPosition
+            );
+            yPosition += 10;
+          }
+        });
+
+        // Calcular el subtotal, IVA y total
+        let subtotal = details.reduce((sum: number, detail: any) => {
+          if (detail.id_bill?.id === this.selectedBillPdf.id) {
+            return sum + (detail.unit_price * detail.amount);
+          }
+          return sum;
+        }, 0);
+
+        const IVA = 0.19;  // Supongamos que el IVA es del 19%
+        const total = subtotal + (subtotal * IVA);
+
+        // Mostrar subtotal, IVA y total en el PDF
+        doc.text(`Subtotal: ${subtotal.toFixed(2)}`, 14, yPosition);
+        yPosition += 10;
+        doc.text(`IVA (19%): ${(subtotal * IVA).toFixed(2)}`, 14, yPosition);
+        yPosition += 10;
+        doc.text(`Total: ${total.toFixed(2)}`, 14, yPosition);
+
+        // Guardar el PDF generado
+        doc.save('factura_' + this.selectedBillPdf.id + '.pdf');
+      },
+      error: (err: any) => {
+        console.error('Error al obtener los detalles:', err);
+      }
+    });
+  }
+
+
 
 }

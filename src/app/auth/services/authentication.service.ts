@@ -21,7 +21,10 @@ export class AuthenticationService {
     this.httpClient = this.injector.get(HttpClient)
    }
 
-   /*
+   getEmployee(employeeId: string): Observable<LoginEmployee>{
+    return this.httpClient.get<LoginEmployee>(`${this.API_URL}/${employeeId}`)
+  }
+
 
   login(number_id: string, password: string): Observable<any>{
     return this.httpClient.post(this.loginUrl, {number_id, password})
@@ -81,5 +84,4 @@ export class AuthenticationService {
     localStorage.removeItem(this.tokenKey);
     this.router.navigate(['/login'])
   }
-    */
 }

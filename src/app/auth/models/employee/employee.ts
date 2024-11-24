@@ -1,4 +1,4 @@
 export interface LoginEmployee{
-  number_id: string;
+  numberId: string;
   password_id: string;
 }
