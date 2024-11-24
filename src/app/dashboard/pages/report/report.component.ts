@@ -154,6 +154,10 @@ export class ReportComponent implements OnInit{
     document.body.style.overflow = '';
   }
 
+  recogerId(id_bill: number){
+    id_bill = this.selectedBill.index;
+  }
+
   //FIN SECCION DETALLES ---------------------------------------
 
   //MODALES Y DEMAS -----------------------------------------------
@@ -202,6 +206,7 @@ export class ReportComponent implements OnInit{
   }
 
   generatePDF(bill: any) {
+    console.log(bill)
     if (!this.selectedBillPdf) {
       console.error('No se ha seleccionado ninguna factura');
       return;
@@ -211,7 +216,7 @@ export class ReportComponent implements OnInit{
 
     // Título
     doc.setFontSize(18);
-    doc.text('Factura N. ' + this.selectedBillPdf.id, 14, 20);
+    doc.text('Factura N. ' + this.selectedBillPdf.index, 14, 20);
 
     // Detalles del Cliente
     doc.setFontSize(12);
