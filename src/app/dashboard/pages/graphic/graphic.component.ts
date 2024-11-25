@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormService } from '../product/services/form.service';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FilterProductsPipe } from '../product/filter/filter-products.pipe';
@@ -13,7 +13,7 @@ import { GenderService } from './services/gender.service';
 @Component({
   selector: 'app-graphic',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule, RouterLink, HttpClientModule, CommonModule, FormsModule, FilterProductsPipe, NgxPaginationModule],
+  imports: [RouterOutlet, ReactiveFormsModule, HttpClientModule, CommonModule, FormsModule, FilterProductsPipe, NgxPaginationModule],
   templateUrl: './graphic.component.html',
   styleUrl: './graphic.component.css'
 })
@@ -59,9 +59,6 @@ export class GraphicComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.formService.products$.subscribe(products => {
-          this.products = products
-        })
         console.log(this.getEmployee());
         console.log(this.getCities());
         console.log(this.getGender());
@@ -166,14 +163,15 @@ export class GraphicComponent implements OnInit {
         console.log(employee)
         this.employeeService.createEmployee(employee).subscribe({
           next: () => {
-            console.log('Producto agregado exitosamente');
+            console.log('Empleado agregado exitosamente');
             this.formEmployee.reset();
           },
           error: (err: any) => {
-            console.error('Error al agregar el insumo', err)
+            console.error('Error al agregar el empleado', err)
           }
         })
       }
+      this.closeEmployee();
     }
 
     //FIN SECCION MODALES Y DEMAS -------------------------------------------

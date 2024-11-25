@@ -21,6 +21,7 @@ export const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, children: [
     {path: 'home', component: HomeComponent},
     {path: 'product', component: ProductComponent, children: [
+      {path: 'add-product', component: AddProductComponent}
     ]},
     {path: 'employee', component: GraphicComponent, children: [
     ]},
@@ -28,7 +29,6 @@ export const routes: Routes = [
       {path: 'fact', component: FactComponent}
     ]},
     {path: 'client', component: ClientComponent, children: [
-      {path: 'add-client', component: AddClientComponent}
     ]},
     {path: 'supplier', component: SupplierComponent},
     {path: 'supply', component: SupplyComponent, children: [

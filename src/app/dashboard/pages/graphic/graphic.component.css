@@ -1,0 +1,25 @@
+@media (max-width: 1100px){
+  .button-add-i{
+    font-size: 0.8rem;
+    margin-left: 2vh
+  }
+}
+
+select {
+  min-height: 40px; /* Ajusta esto según sea necesario */
+  -webkit-appearance: none; /* Para Safari y Chrome */
+  -moz-appearance: none; /* Para Firefox */
+  appearance: none; /* Para navegadores modernos */
+  background-image: none; /* Opcional: elimina la imagen de fondo en navegadores que no aplican -webkit-appearance */
+
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Para Firefox */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Para Safari y Chrome */
+  margin: 0; /* Opcional: elimina el margen */
+}
