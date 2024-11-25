@@ -60,6 +60,8 @@ export class ClientComponent {
       this.products = products
     })
     console.log(this.getClients());
+    console.log(this.getCities());
+    console.log(this.getGender());
   }
 
   //SECCION EMPLEADOS ----------------------------------------

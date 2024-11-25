@@ -192,7 +192,7 @@
         <div>
           <h3 class="text-xl font-semibold mb-2">Detalles del Empleado</h3>
           <div *ngIf="selectedBill.employee" class="text-gray-300">
-            <p><strong>Id Empleado:</strong> {{selectedBill.employee.number_id}}</p>
+            <p><strong>Id Empleado:</strong> {{selectedBill.employee.numberId}}</p>
             <p><strong>Nombre:</strong> {{selectedBill.employee.name}} {{selectedBill.employee.last_name}}</p>
             <p><strong>Teléfono:</strong> {{selectedBill.employee.phone_number}}</p>
             <p><strong>Dirección:</strong> {{selectedBill.employee.address}}</p>
@@ -266,14 +266,14 @@
           </div>
           <div class="flex justify-between py-2 mr-10 text-xl font-bold text-gray-100">
             <span>Total:</span>
-            <span>{{ total | currency }}</span>
+            <span>{{ subtotal | currency }}</span>
           </div>
         </div>
       </div>
 
       <!-- Botones de Acción -->
       <div class="flex justify-end space-x-4 mt-8">
-        <button class="bg-green-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200" type="button" (click)="generatePDF(bill)">Generar PDF</button>
+        <button class="bg-green-700 text-white px-4 py-2 rounded shadow-2xl border border-slate-400 hover:border-slate-200" type="button" (click)="generatePDF()">Generar PDF</button>
         <button class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded" (click)="closeDetails()">Cerrar</button>
       </div>
     </div>

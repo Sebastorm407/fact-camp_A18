@@ -1,28 +1,20 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { GetSupplyService } from '../product/supply/services/get-supply.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { Supply } from '../product/supply/interfaces/supply/supply';
-import { FilterSuppliesPipe } from '../product/supply/services/filter/filter-supplies.pipe';
-import { RouterOutlet } from '@angular/router';
 import { FormService } from '../product/services/form.service';
-import { CreateProductService } from '../product/add-product/services/create-product.service';
 import { Bill } from '../fact/interfaces/bill';
 import { BillService } from '../fact/services/bill/bill.service';
-import { Client } from '../fact/interfaces/client';
-import { Employee } from '../fact/interfaces/employee';
 import { FilterFactPipe } from './services/filter/filter-fact.pipe';
 import { DetailBillService } from '../fact/services/detail-bill/detail-bill.service';
-import { subscribe } from 'diagnostics_channel';
 import { ReportsService } from './services/report/reports.service';
 import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [HttpClientModule, RouterOutlet ,HttpClientModule, CommonModule, ReactiveFormsModule, NgxPaginationModule, FormsModule, FilterFactPipe],
+  imports: [HttpClientModule, HttpClientModule, CommonModule, ReactiveFormsModule, NgxPaginationModule, FormsModule, FilterFactPipe],
   templateUrl: './report.component.html',
   styleUrl: './report.component.css'
 })
@@ -205,9 +197,8 @@ export class ReportComponent implements OnInit{
     console.log('Factura seleccionada', this.selectedBillPdf);
   }
 
-  generatePDF(bill: any) {
-    console.log(bill)
-    if (!this.selectedBillPdf) {
+  generatePDF() {
+    if (!this.selectedBill) {
       console.error('No se ha seleccionado ninguna factura');
       return;
     }
@@ -216,18 +207,18 @@ export class ReportComponent implements OnInit{
 
     // Título
     doc.setFontSize(18);
-    doc.text('Factura N. ' + this.selectedBillPdf.index, 14, 20);
+    doc.text('Factura N. ' + this.selectedBill.index, 14, 20);
 
     // Detalles del Cliente
     doc.setFontSize(12);
-    doc.text('Cliente: ' + this.selectedBillPdf.client?.name + ' ' + this.selectedBillPdf.client?.last_name, 14, 30);
-    doc.text('ID Cliente: ' + this.selectedBillPdf.client?.number_id, 14, 40);
-    doc.text('Dirección: ' + this.selectedBillPdf.client?.address, 14, 50);
-    doc.text('Teléfono: ' + this.selectedBillPdf.client?.phone_number, 14, 60);
+    doc.text('Cliente: ' + this.selectedBill.client?.name + ' ' + this.selectedBill.client?.last_name, 14, 30);
+    doc.text('ID Cliente: ' + this.selectedBill.client?.number_id, 14, 40);
+    doc.text('Dirección: ' + this.selectedBill.client?.address, 14, 50);
+    doc.text('Teléfono: ' + this.selectedBill.client?.phone_number, 14, 60);
 
     // Detalles del Empleado
-    doc.text('Empleado: ' + this.selectedBillPdf.employee?.name + ' ' + this.selectedBillPdf.employee?.last_name, 14, 70);
-    doc.text('ID Empleado: ' + this.selectedBillPdf.employee?.number_id, 14, 80);
+    doc.text('Empleado: ' + this.selectedBill.employee?.name + ' ' + this.selectedBill.employee?.last_name, 14, 70);
+    doc.text('ID Empleado: ' + this.selectedBill.employee?.numberId, 14, 80);
 
     // Tabla de productos
     let yPosition = 100;
@@ -239,7 +230,7 @@ export class ReportComponent implements OnInit{
     this.reportService.getDetails().subscribe({
       next: (details: any) => {
         details.forEach((detail: any) => {
-          if (detail.id_bill?.id === this.selectedBillPdf.id) {
+          if (detail.id_bill?.id === this.selectedBill.id) {
             // Imprimir los detalles de la factura seleccionada
             doc.text(
               `   ${detail.amount}                ${detail.id_product.name}                ${detail.unit_price}             ${detail.unit_price * detail.amount}`,
@@ -252,24 +243,21 @@ export class ReportComponent implements OnInit{
 
         // Calcular el subtotal, IVA y total
         let subtotal = details.reduce((sum: number, detail: any) => {
-          if (detail.id_bill?.id === this.selectedBillPdf.id) {
+          if (detail.id_bill?.id === this.selectedBill.id) {
             return sum + (detail.unit_price * detail.amount);
           }
           return sum;
         }, 0);
 
         const IVA = 0.19;  // Supongamos que el IVA es del 19%
-        const total = subtotal + (subtotal * IVA);
 
         // Mostrar subtotal, IVA y total en el PDF
         doc.text(`Subtotal: ${subtotal.toFixed(2)}`, 14, yPosition);
         yPosition += 10;
-        doc.text(`IVA (19%): ${(subtotal * IVA).toFixed(2)}`, 14, yPosition);
-        yPosition += 10;
-        doc.text(`Total: ${total.toFixed(2)}`, 14, yPosition);
+        doc.text(`Total: ${subtotal.toFixed(2)}`, 14, yPosition);
 
         // Guardar el PDF generado
-        doc.save('factura_' + this.selectedBillPdf.id + '.pdf');
+        doc.save('factura_' + this.selectedBill.id + '.pdf');
       },
       error: (err: any) => {
         console.error('Error al obtener los detalles:', err);
