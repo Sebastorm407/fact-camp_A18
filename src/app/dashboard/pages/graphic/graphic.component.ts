@@ -1,19 +1,19 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Chart, ChartConfiguration } from 'chart.js/auto';
 import { FormService } from '../product/services/form.service';
-import { CreateProductService } from '../product/add-product/services/create-product.service';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FilterProductsPipe } from '../product/filter/filter-products.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { EmployesService } from './services/employes.service';
+import { CityService } from './services/cities.service';
+import { GenderService } from './services/gender.service';
 
 @Component({
   selector: 'app-graphic',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, HttpClientModule, CommonModule, FormsModule, FilterProductsPipe, NgxPaginationModule],
+  imports: [RouterOutlet, ReactiveFormsModule, RouterLink, HttpClientModule, CommonModule, FormsModule, FilterProductsPipe, NgxPaginationModule],
   templateUrl: './graphic.component.html',
   styleUrl: './graphic.component.css'
 })
@@ -26,27 +26,78 @@ export class GraphicComponent implements OnInit {
 
     //Modal
     isOpenModal: boolean = false;
+    isOpenEmployees: boolean = false;
+    formEmployee: FormGroup;
 
     //Productos
     createdProduct: any = null;
     employeeId: number | null = null;
     products: {id: number, name: string, sell_price: number}[] = [];
     employees: any[] = []
+    cities: any[] = []
+    genders: any[] = []
+
 
     constructor(
+      private fb: FormBuilder,
       private formService: FormService,
-      private createProductService: CreateProductService,
-      private employeeService: EmployesService
-    ){}
+      private employeeService: EmployesService,
+      private cityService: CityService,
+      private genderService: GenderService
+    ){
+      this.formEmployee = this.fb.group({
+        number_id: ['', Validators.required],
+        name: ['', Validators.required],
+        last_name: ['', Validators.required],
+        birthdate: ['2024-01-01', Validators.required],
+        address: ['', Validators.required],
+        phone_number: ['', Validators.required],
+        id_city: ['', Validators.required],
+        id_gender: ['', Validators.required],
+        password_id: ['123456789', Validators.required]
+      });
+    }
 
     ngOnInit(): void {
         this.formService.products$.subscribe(products => {
           this.products = products
         })
         console.log(this.getEmployee());
+        console.log(this.getCities());
+        console.log(this.getGender());
     }
 
     //SECCION EMPLEADOS ----------------------------------------
+
+    getGender(): void {
+      this.genderService.getGender().subscribe({
+        next: (data) => {
+          console.log('Gender', data)
+          this.genders = data.map((gender: any, index: any) => ({
+            ...gender,
+            index: index + 1
+          }));
+        },
+        error: (err) => {
+          console.error('Error al obtener los generos');
+        }
+      })
+    }
+
+    getCities(): void {
+      this.cityService.getCities().subscribe({
+        next: (data) => {
+          console.log('Cities', data)
+          this.cities = data.map((city: any, index: any) => ({
+            ...city,
+            index: index + 1
+          }));
+        },
+        error: (err) => {
+          console.error('Error al obtener las ciudades')
+        }
+      })
+    }
 
     getEmployee(): void{
       this.employeeService.getEmployees().subscribe({
@@ -109,5 +160,30 @@ export class GraphicComponent implements OnInit {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
+    createEmployee(){
+      if(this.formEmployee.valid){
+        const employee = this.formEmployee.value;
+        console.log(employee)
+        this.employeeService.createEmployee(employee).subscribe({
+          next: () => {
+            console.log('Producto agregado exitosamente');
+            this.formEmployee.reset();
+          },
+          error: (err: any) => {
+            console.error('Error al agregar el insumo', err)
+          }
+        })
+      }
+    }
+
     //FIN SECCION MODALES Y DEMAS -------------------------------------------
+
+    openAddEmployee(){
+      this.isOpenEmployees = true;
+    }
+
+    closeEmployee(){
+      this.isOpenEmployees = false
+      document.body.style.overflow = '';
+    }
 }

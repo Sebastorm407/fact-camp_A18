@@ -21,10 +21,8 @@ export const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, children: [
     {path: 'home', component: HomeComponent},
     {path: 'product', component: ProductComponent, children: [
-      {path: 'add-product', component: AddProductComponent},
     ]},
     {path: 'employee', component: GraphicComponent, children: [
-      {path: 'add-employee', component: AddEmployeeComponent},
     ]},
     {path: 'report', component: ReportComponent, children: [
       {path: 'fact', component: FactComponent}

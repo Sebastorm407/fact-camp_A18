@@ -3,12 +3,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit,  } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddCategoryService } from './services/add-category.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CreateSupplyService } from './services/create-supply.service';
 import { GetCategoriesService } from './services/category/get-categories.service';
 import { FilterCategoryPipe } from '../supply/services/filter/filter-category.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { GetSupplyService } from '../supply/services/get-supply.service';
 
 @Component({
   selector: 'app-add-supply',
@@ -42,9 +40,6 @@ export class AddSupplyComponent implements OnInit {
     private addCategory: AddCategoryService,
     private getCategories: GetCategoriesService,
     private createSupply: CreateSupplyService,
-    private getSupply: GetSupplyService,
-    private route: ActivatedRoute
-
   ){
     this.formCategory = this.fb.group({
       name: ['', Validators.required]
